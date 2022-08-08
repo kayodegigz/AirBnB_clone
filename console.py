@@ -4,6 +4,7 @@ Entry point of the command interpreter
 """
 
 import cmd
+from models.__init__ import storage
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -17,6 +18,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """Exit the program"""
+        print()
         return True
 
     def emptyline(self):
