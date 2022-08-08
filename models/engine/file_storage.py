@@ -19,26 +19,26 @@ class FileStorage:
     def new(self, obj):
         """"""
         obj_dict_key = f"{type(obj).__name__}.{obj.id}"
-        self.__objects[obj_dict_key] = self.__dict__
+        self.__objects[obj_dict_key] = obj
 
     def save(self):
         """
         manage serialization of objects to json
         """
         new_obj = {}
+        if self.__objects:
+            for key, value in self.__objects.items():
+                new_obj[key] = value.to_dict()
 
-        for key, value in self.__objects.items():
-            new_obj[key] = value
-
-        with open(self.__file_path, 'w') as file:
-            json.dump(new_obj, file)
+            with open(self.__file_path, 'w+') as file:
+                json.dump(new_obj, file)
 
     def reload(self):
         """"""
         if os.path.exists(self.__file_path):
             with open(self.__file_path, "r", encoding="utf-8") as f:
                 obj_dict = json.load(f)
-                for value in obj_dict.values():
+                for key, value in obj_dict.items():
                     """value is a dict, __class__ contains the class name
                     but it's a str, it can't be used as a str so
                     I used eval to strip the str off"""
@@ -47,7 +47,6 @@ class FileStorage:
                     init method of BaseModel) then passes the instance(object)
                     to the 'new' method so it can be added to the __objects
                     dictionary"""
-                    self.new(cls_name(**value))
-
+                    self.__objects[key] = cls_name(**value)
         else:
             return
