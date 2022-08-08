@@ -9,7 +9,7 @@ from models.user import User
 
 class FileStorage:
     """"""
-    __file_path = ""
+    __file_path = "file.json"
     __objects = {}
 
     def all(self):
@@ -43,7 +43,10 @@ class FileStorage:
                     but it's a str, it can't be used as a str so 
                     I used eval to strip the str off"""
                     cls_name = eval(value['__class__'])
-                    """add each value(dict) to __objects dict"""
+                    """initialises an instance like class(**kwargs), (check
+                    init method of BaseModel) then passes the instance(object)
+                    to the 'new' method so it can be added to the __objects
+                    dictionary"""
                     self.new(cls_name(**value))
 
         else:
