@@ -36,7 +36,7 @@ class BaseModel ():
 
     def save(self):
         """changes the updated_at time so we know when last the instance was modified"""
-        self.updated_at = datetime.datetime.now()
+        self.updated_at = datetime.now()
         """changes the updated_at time so we know
         when last the instance was modified"""
         self.updated_at = datetime.now()
