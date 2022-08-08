@@ -32,7 +32,7 @@ class BaseModel ():
     def __str__(self):
         """returns the specified string representation"""
         return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
+            self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
         """changes the updated_at time so we know when last the instance was modified"""
@@ -51,6 +51,6 @@ class BaseModel ():
 
         new_dict["created_at"] = self.created_at.isoformat()
         new_dict["updated_at"] = self.updated_at.isoformat()
-        new_dict["__class__"] = type(self).__name__
+        new_dict["__class__"] = self.__class__.__name__
 
         return new_dict

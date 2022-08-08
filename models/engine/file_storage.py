@@ -7,6 +7,7 @@ import json
 import os
 from models.user import User
 
+
 class FileStorage:
     """"""
     __file_path = "file.json"
@@ -18,20 +19,21 @@ class FileStorage:
 
     def new(self, obj):
         """"""
-        obj_dict_key = f"{obj.__class__.name}.{obj.id}"
-        self.__objects[obj_dict_key] = obj
+        if obj:
+            obj_dict_key = f"{obj.__class__.name}.{obj.id}"
+            self.__objects[obj_dict_key] = obj
 
     def save(self):
         """
         manage serialization of objects to json
         """
         new_obj = {}
-        if self.__objects:
-            for key, value in self.__objects.items():
-                new_obj[key] = value.to_dict()
 
-            with open(self.__file_path, 'w') as file:
-                json.dump(new_obj, file)
+        for key, value in self.__objects.items():
+            new_obj[key] = value.to_dict()
+
+        with open(self.__file_path, 'w') as file:
+            json.dump(new_obj, file)
 
     def reload(self):
         """"""
