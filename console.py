@@ -4,9 +4,9 @@ Entry point of the command interpreter
 """
 
 import cmd
+from models.__init__ import storage
 from models.base_model import BaseModel
 from models import storage  # in the init file
-
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -20,6 +20,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """Exit the program"""
+        print()
         return True
 
     def emptyline(self):
@@ -33,9 +34,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         if line_list[0] != "BaseModel": #we'll have to refactor and make this dynamic
             print("** class doesn't exist **")
-       new_inst = BaseModel()
-       new_inst.save()
-       print(new_inst.obj)
+        new_inst = BaseModel()
+        new_inst.save()
+        print(new_inst.obj)
 
     def do_show(self, line):
         line_list = line.split()
@@ -67,9 +68,9 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, line):
         line_list = list.split()
         if len(line_list) == 0:  # if no arg is passed to all command
-            print[str(v) for v in storage.all().values()]
+            print([str(v) for v in storage.all().values()])
         elif len(line_list) > 0:
-            print[str(v) for v in storage.all.values() if type(v).__name__ == line_list[0]]
+            print([str(v) for v in storage.all.values() if type(v).__name__ == line_list[0]])
         if line_list[0] != "BaseModel":  # has to be dynamic
             print("** class doesn't exist **")
 
