@@ -28,7 +28,7 @@ class FileStorage:
         new_obj = {}
 
         for key, value in self.__objects.items():
-            new_obj[key] = value.to_dict()
+            new_obj[key] = value
 
         with open(self.__file_path, 'w') as file:
             json.dump(new_obj, file)
@@ -40,7 +40,7 @@ class FileStorage:
                 obj_dict = json.load(f)
                 for value in obj_dict.values():
                     """value is a dict, __class__ contains the class name
-                    but it's a str, it can't be used as a str so 
+                    but it's a str, it can't be used as a str so
                     I used eval to strip the str off"""
                     cls_name = eval(value['__class__'])
                     """initialises an instance like class(**kwargs), (check
