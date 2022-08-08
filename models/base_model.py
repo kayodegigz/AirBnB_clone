@@ -31,7 +31,7 @@ class BaseModel ():
 
     def __str__(self):
         """returns the specified string representation"""
-        return "[{}] ({}) {}".format(__class__.name, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(type(self).__name__, self.id, self.__dict__)
 
     def save(self):
         """changes the updated_at time so we know when last the instance was modified"""
