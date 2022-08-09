@@ -49,7 +49,7 @@ class HBNBCommand(cmd.Cmd):
         if len(line_list) < 1:
             print("** class name missing **")
             return
-        if line_list[0] != "BaseModel":  # this also has to be dynamic
+        if line not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         if len(line_list) < 2:
@@ -67,7 +67,7 @@ class HBNBCommand(cmd.Cmd):
         if len(line_list) < 1:
             print("** class name missing **")
             return
-        if line_list[0] != "BaseModel":  # this
+        if line not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         if len(line_list) < 2:
@@ -85,7 +85,7 @@ class HBNBCommand(cmd.Cmd):
         line_list = line.split()
         if len(line_list) == 0:  # if no arg is passed to all command
             print([str(v) for v in storage.all().values()])
-        elif line_list[0] != "BaseModel":  # has to be dynamic
+        if line not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         elif len(line_list) > 0:
@@ -98,7 +98,7 @@ class HBNBCommand(cmd.Cmd):
         if len(line_list) < 1:
             print("** class name missing **")
             return
-        if line_list[0] != "BaseModel":
+        if line not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         if len(line_list) < 2:
