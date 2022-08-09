@@ -4,8 +4,21 @@ JSON instantiation class
 """
 
 import json
-from models.user import User
+from models.amenity import Amenity
 from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+<<<<<<< HEAD
+from models.base_model import BaseModel
+=======
+
+classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
+
+>>>>>>> 449a03d0468883d70372c6609007b9cfc8fc3cab
 
 class FileStorage:
     """
@@ -47,11 +60,11 @@ class FileStorage:
                 """value is a dict, __class__ contains the class name
                 but it's a str, it can't be used as a str so
                 I used eval to strip the str off"""
-                cls_name = eval(value['__class__'])
+                cls_name = classes[(value['__class__'])](**value)
                 """initialises an instance like class(**kwargs), (check
                 init method of BaseModel) then passes the instance(object)
                 to the 'new' method so it can be added to the __objects
                 dictionary"""
-                self.__objects[key] = cls_name(**value)
+                self.__objects[key] = cls_name
         except FileNotFoundError:
             pass

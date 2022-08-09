@@ -14,6 +14,8 @@ class HBNBCommand(cmd.Cmd):
     command interpreter class
     """
     prompt = '(hbnb) '
+    classes = {"BaseModel", "State", "City",
+               "Amenity", "Place", "Review", "User"}
 
     def do_quit(self, line):
         """Exit the program"""
@@ -33,7 +35,8 @@ class HBNBCommand(cmd.Cmd):
         line_list = line.split()
         if len(line_list) < 1:
             print("** class name missing **")
-        if line_list[0] != "BaseModel":  # we'll have to refactor and make this dynamic
+        if line_list[0] != "BaseModel":
+            # we'll have to refactor and make this dynamic
             print("** class doesn't exist **")
         new_inst = BaseModel()
         new_inst.save()
@@ -110,7 +113,6 @@ class HBNBCommand(cmd.Cmd):
         obj = storage.all()[key]  # check for d particular inst
         setattr(obj, line_list[2], line_list[3])
         storage.save()
-
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

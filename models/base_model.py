@@ -9,6 +9,10 @@ import models
 
 
 class BaseModel ():
+    """Base class for Airbnb clone project
+    Methods
+    """
+
     def __init__(self, *args, **kwargs):
         """initialises instance attribute values"""
         if kwargs:
