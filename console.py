@@ -35,9 +35,11 @@ class HBNBCommand(cmd.Cmd):
         line_list = line.split()
         if len(line_list) < 1:
             print("** class name missing **")
+            return
         if line_list[0] != "BaseModel":
             # we'll have to refactor and make this dynamic
             print("** class doesn't exist **")
+            return
         new_inst = BaseModel()
         new_inst.save()
         print(new_inst.id)
