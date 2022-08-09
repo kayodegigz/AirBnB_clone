@@ -36,7 +36,7 @@ class HBNBCommand(cmd.Cmd):
         if len(line_list) < 1:
             print("** class name missing **")
             return
-        if line not in HBNBCommand.classes:
+        if line_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         new_inst = eval(line)()
@@ -49,17 +49,19 @@ class HBNBCommand(cmd.Cmd):
         if len(line_list) < 1:
             print("** class name missing **")
             return
-        if line not in HBNBCommand.classes:
+        if line_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        if len(line_list) < 2:
+        try:
+            if line_list[1]:
+                obj_key = ".".join(line_list)
+                if obj_key not in storage.all().keys():  # this too
+                    print("** no instance found **")
+                    return
+                print(storage.all()[obj_key])
+        except IndexError:
             print("** instance id missing **")
-            return
-        obj_key = ".".join(line_list)
-        if obj_key not in storage.all().keys():  # this too
-            print("** no instance found **")
-            return
-        print(storage.all()[obj_key])
+
 
     def do_destroy(self, line):
         """Destroy instance specified by user; Save changes to JSON file"""
@@ -67,25 +69,29 @@ class HBNBCommand(cmd.Cmd):
         if len(line_list) < 1:
             print("** class name missing **")
             return
-        if line not in HBNBCommand.classes:
+        if line_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         if len(line_list) < 2:
             print("** instance id missing **")
             return
-        obj_key = ".".join(line_list)
-        if obj_key not in storage.all().keys():  # this too
-            print("** no instance found **")
-            return
-        del storage.all()[obj_key]
-        storage.save()
+        try:
+            if line_list[1]:
+                obj_key = ".".join(line_list)
+                if obj_key not in storage.all().keys():  # this too
+                    print("** no instance found **")
+                    return
+                del storage.all()[obj_key]
+                storage.save()
+        except IndexError:
+            print("** instance id missing **")
 
     def do_all(self, line):
         """Print all objects or all objects of specified class"""
         line_list = line.split()
         if len(line_list) == 0:  # if no arg is passed to all command
             print([str(v) for v in storage.all().values()])
-        if line not in HBNBCommand.classes:
+        if line_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         elif len(line_list) > 0:
@@ -98,7 +104,7 @@ class HBNBCommand(cmd.Cmd):
         if len(line_list) < 1:
             print("** class name missing **")
             return
-        if line not in HBNBCommand.classes:
+        if line_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         if len(line_list) < 2:
