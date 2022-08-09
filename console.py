@@ -13,7 +13,7 @@ class HBNBCommand(cmd.Cmd):
     """
     command interpreter class
     """
-    prompt = '(hbnb)'
+    prompt = '(hbnb) '
 
     def do_quit(self, line):
         """Exit the program"""
@@ -44,13 +44,17 @@ class HBNBCommand(cmd.Cmd):
         line_list = line.split()
         if len(line_list) < 1:
             print("** class name missing **")
+            return
         if line_list[0] != "BaseModel":  # this also has to be dynamic
             print("** class doesn't exist **")
+            return
         if len(line_list) < 2:
             print("** instance id missing **")
+            return
         obj_key = ".".join(line_list)
         if obj_key not in storage.all().keys():  # this too
             print("** no instance found **")
+            return
         print(storage.all()[obj_key])
 
     def do_destroy(self, line):
@@ -70,14 +74,15 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """Print all objects or all objects of specified class"""
-        line_list = list.split()
+        line_list = line.split()
+        if line_list[0] != "BaseModel":  # has to be dynamic
+            print("** class doesn't exist **")
+            return
         if len(line_list) == 0:  # if no arg is passed to all command
             print([str(v) for v in storage.all().values()])
         elif len(line_list) > 0:
-            print([str(v) for v in storage.all.values()
+            print([str(v) for v in storage.all().values()
                   if type(v).__name__ == line_list[0]])
-        if line_list[0] != "BaseModel":  # has to be dynamic
-            print("** class doesn't exist **")
 
     def do_update(self, line):
         """Update if given exact object, exact attribute"""
