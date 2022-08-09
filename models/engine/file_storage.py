@@ -13,12 +13,9 @@ from models.state import State
 from models.user import User
 <<<<<<< HEAD
 from models.base_model import BaseModel
-=======
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
-
->>>>>>> 449a03d0468883d70372c6609007b9cfc8fc3cab
 
 class FileStorage:
     """
