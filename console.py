@@ -14,6 +14,8 @@ class HBNBCommand(cmd.Cmd):
     command interpreter class
     """
     prompt = '(hbnb)'
+    classes = {"BaseModel", "State", "City",
+               "Amenity", "Place", "Review", "User"}
 
     def do_quit(self, line):
         """Exit the program"""
@@ -33,7 +35,8 @@ class HBNBCommand(cmd.Cmd):
         line_list = line.split()
         if len(line_list) < 1:
             print("** class name missing **")
-        if line_list[0] != "BaseModel":  # we'll have to refactor and make this dynamic
+        if line_list[0] != "BaseModel":
+            # we'll have to refactor and make this dynamic
             print("** class doesn't exist **")
         new_inst = BaseModel()
         new_inst.save()
@@ -70,14 +73,27 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """Print all objects or all objects of specified class"""
-        line_list = list.split()
-        if len(line_list) == 0:  # if no arg is passed to all command
-            print([str(v) for v in storage.all().values()])
-        elif len(line_list) > 0:
-            print([str(v) for v in storage.all.values()
-                  if type(v).__name__ == line_list[0]])
-        if line_list[0] != "BaseModel":  # has to be dynamic
+        args = parse(line)
+        obj_list = []
+        if len(line) == 0:
+            for objs in storage.all().values():
+                obj_list.append(objs)
+            print(obj_list)
+        elif args[0] in HBNBCommand.classes:
+            for key, objs in storage.all().items():
+                if args[0] in key:
+                    obj_list.append(objs)
+            print(obj_list)
+        else:
             print("** class doesn't exist **")
+        # line_list = line.split()
+        # if len(line_list) == 0:  # if no arg is passed to all command
+        #     print([str(v) for v in storage.all().values()])
+        # elif len(line_list) > 0:
+        #     print([str(v) for v in storage.all().values()
+        #           if type(v).__name__ == line_list[0]])
+        # if line_list[0] != "BaseModel":  # has to be dynamic
+        #     print("** class doesn't exist **")
 
     def do_update(self, line):
         """Update if given exact object, exact attribute"""
@@ -105,6 +121,12 @@ class HBNBCommand(cmd.Cmd):
         obj = storage.all()[key]  # check for d particular inst
         setattr(obj, line_list[2], line_list[3])
         storage.save()
+
+
+
+def parse(line):
+    """Helper method to parse user typed input"""
+    return tuple(line.split())
 
 
 if __name__ == '__main__':
