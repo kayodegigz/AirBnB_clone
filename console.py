@@ -13,7 +13,7 @@ class HBNBCommand(cmd.Cmd):
     """
     command interpreter class
     """
-    prompt = '(hbnb) '
+    prompt = '(hbnb)'
     classes = {"BaseModel", "State", "City",
                "Amenity", "Place", "Review", "User"}
 
@@ -35,10 +35,12 @@ class HBNBCommand(cmd.Cmd):
         line_list = line.split()
         if len(line_list) < 1:
             print("** class name missing **")
-        if line_list[0] != "BaseModel":
+            return
+        if line not in HBNBCommand.classes:
             # we'll have to refactor and make this dynamic
             print("** class doesn't exist **")
-        new_inst = BaseModel()
+            return
+        new_inst = eval(line)()
         new_inst.save()
         print(new_inst.obj)
 
