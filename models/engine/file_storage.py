@@ -39,15 +39,15 @@ class FileStorage:
         try:
             with open(self.__file_path, "r", encoding="utf-8") as f:
                 obj_dict = json.load(f)
-                for key, value in obj_dict.items():
-                    """value is a dict, __class__ contains the class name
-                    but it's a str, it can't be used as a str so
-                    I used eval to strip the str off"""
-                    cls_name = eval(value['__class__'])
-                    """initialises an instance like class(**kwargs), (check
-                    init method of BaseModel) then passes the instance(object)
-                    to the 'new' method so it can be added to the __objects
-                    dictionary"""
-                    self.__objects[key] = cls_name(**value)
+            for key, value in obj_dict.items():
+                """value is a dict, __class__ contains the class name
+                but it's a str, it can't be used as a str so
+                I used eval to strip the str off"""
+                cls_name = eval(value['__class__'])
+                """initialises an instance like class(**kwargs), (check
+                init method of BaseModel) then passes the instance(object)
+                to the 'new' method so it can be added to the __objects
+                dictionary"""
+                self.__objects[key] = cls_name(**value)
         except FileNotFoundError:
             pass
