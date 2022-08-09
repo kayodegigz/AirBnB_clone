@@ -4,7 +4,6 @@ JSON instantiation class
 """
 
 import json
-import os
 from models.user import User
 
 
@@ -37,7 +36,7 @@ class FileStorage:
 
     def reload(self):
         """"""
-        if os.path.exists(self.__file_path):
+        try:
             with open(self.__file_path, "r", encoding="utf-8") as f:
                 obj_dict = json.load(f)
                 for key, value in obj_dict.items():
@@ -50,5 +49,5 @@ class FileStorage:
                     to the 'new' method so it can be added to the __objects
                     dictionary"""
                     self.__objects[key] = cls_name(**value)
-        else:
-            return
+        except FileNotFoundError:
+            pass
