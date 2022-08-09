@@ -40,6 +40,7 @@ class HBNBCommand(cmd.Cmd):
         print(new_inst.obj)
 
     def do_show(self, line):
+        """Print string representation: name and id"""
         line_list = line.split()
         if len(line_list) < 1:
             print("** class name missing **")
@@ -53,6 +54,7 @@ class HBNBCommand(cmd.Cmd):
         print(storage.all()[obj_key])
 
     def do_destroy(self, line):
+        """Destroy instance specified by user; Save changes to JSON file"""
         line_list = line.split()
         if len(line_list) < 1:
             print("** class name missing **")
@@ -67,6 +69,7 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
     def do_all(self, line):
+        """Print all objects or all objects of specified class"""
         line_list = list.split()
         if len(line_list) == 0:  # if no arg is passed to all command
             print([str(v) for v in storage.all().values()])
@@ -77,6 +80,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_update(self, line):
+        """Update if given exact object, exact attribute"""
         line_list = line.split()
         if len(line_list) < 1:
             print("** class name missing **")
@@ -91,7 +95,6 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
         if len(line_list) < 4:
             print("** value missing **")
-
         if isinstance(eval(line_list[3]), int):  # strip off str ndcheck if int
             line_list[3] = int(line_list[3])
         elif isinstance(eval(line_list[3]), float):  # or if float
