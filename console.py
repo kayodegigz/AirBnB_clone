@@ -37,7 +37,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         if line not in HBNBCommand.classes:
-            # we'll have to refactor and make this dynamic
             print("** class doesn't exist **")
             return
         new_inst = eval(line)()
