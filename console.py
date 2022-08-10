@@ -131,5 +131,42 @@ class HBNBCommand(cmd.Cmd):
         setattr(obj, line_list[2], line_list[3])
         storage.save()
 
+    def default(self, line):
+        """
+        every other case
+        """
+        if "." not in line:
+            print("*** Unknown syntax: {}".format(line))
+            return
+        try:
+            line_list = line.split('.')
+            arg = line_list[0]
+            cmd = line_list[1].replace('(', '').replace(')', '')
+            if cmd == 'all':
+                self.do_all(arg)
+            elif cmd == 'count':
+                self.do_count(arg)
+            elif 'show' in cmd:
+                cmd = cmd[4:].replace('"', '').replace("'", '')
+                arg = arg + ' ' + cmd
+                self.do_show(arg)
+            elif 'destroy' in cmd:
+                cmd = cmd[7:].replace('"', '').replace("'", '')
+                arg = arg + ' ' + cmd
+                self.do_destroy(arg)
+            elif 'update' in cmd:
+                cmd = cmd[6:].replace('"', '').replace("'", '')
+                args = cmd.split(',')
+                id = args[0]
+                name = args[1]
+                value = args[2]
+                arg = arg + ' ' + id + ' ' + name + ' ' + value
+                self.do_update(arg)
+            else:
+                print("*** Unknown syntax: {}".format(line))
+        except IndexError:
+            print("*** Unknown syntax: {}".format(line))
+
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
