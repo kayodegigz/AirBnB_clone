@@ -68,7 +68,6 @@ class HBNBCommand(cmd.Cmd):
         except IndexError:
             print("** instance id missing **")
 
-
     def do_destroy(self, line):
         """Destroy instance specified by user; Save changes to JSON file"""
         line_list = line.split()
@@ -106,14 +105,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, line):
         """Count all instances of a class"""
-        line_list = line.split()
-        if len(line_list) < 1:
-            print("** class name missing **")
-            return
-        if line_list[0] not in HBNBCommand.classes:
+        if line not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        print(len(storage.all()[line_list[0]]))
+        print(len(storage.all().keys()))
 
     def do_update(self, line):
         """Update if given exact object, exact attribute"""
@@ -172,12 +167,16 @@ class HBNBCommand(cmd.Cmd):
                 arg = arg + ' ' + cmd
                 HBNBCommand.do_destroy(self, arg)
             elif 'update' in cmd:
-                cmd = cmd[6:].replace('"', '').replace("'", '')
-                args = cmd.split(',')
-                id = args[0]
-                name = args[1]
-                value = args[2]
-                arg = arg + ' ' + id + ' ' + name + ' ' + value
+                cmd = cmd.split(',')
+                id = cmd[0][6:].replace('"', '').replace("'", '')
+                if cmd[1][0] == '{':
+                    name = cmd[1]
+                else:
+                    name = cmd[1].replace('"', '').replace("'", '')
+                # value = cmd[2].replace(
+                #     '"', '').replace("'", '') if len(cmd) > 2 else ""
+                value = ""
+                arg = arg + ' ' + id + ' ' + name #+ ' ' + value
                 HBNBCommand.do_update(self, arg)
             else:
                 print("*** Unknown syntax: {}".format(line))
