@@ -173,10 +173,9 @@ class HBNBCommand(cmd.Cmd):
                     name = cmd[1]
                 else:
                     name = cmd[1].replace('"', '').replace("'", '')
-                # value = cmd[2].replace(
-                #     '"', '').replace("'", '') if len(cmd) > 2 else ""
-                value = ""
-                arg = arg + ' ' + id + ' ' + name #+ ' ' + value
+                value = cmd[2].replace(
+                     '"', '').replace("'", '') if len(cmd) > 2 else ""
+                arg = arg + ' ' + id + ' ' + name + ' ' + value
                 HBNBCommand.do_update(self, arg)
             else:
                 print("*** Unknown syntax: {}".format(line))
