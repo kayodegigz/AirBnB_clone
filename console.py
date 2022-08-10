@@ -6,6 +6,12 @@ Entry point of the command interpreter
 import cmd
 from models.__init__ import storage
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models import storage  # in the init file
 
 
@@ -13,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     """
     command interpreter class
     """
-    prompt = '(hbnb)'
+    prompt = '(hbnb) '
     classes = {"BaseModel", "State", "City",
                "Amenity", "Place", "Review", "User"}
 
@@ -154,17 +160,17 @@ class HBNBCommand(cmd.Cmd):
             arg = line_list[0]
             cmd = line_list[1].replace('(', '').replace(')', '')
             if cmd == 'all':
-                self.do_all(arg)
+                HBNBCommand.do_all(self, arg)
             elif cmd == 'count':
-                self.do_count(arg)
+                HBNBCommand.do_count(self, arg)
             elif 'show' in cmd:
                 cmd = cmd[4:].replace('"', '').replace("'", '')
                 arg = arg + ' ' + cmd
-                self.do_show(arg)
+                HBNBCommand.do_show(self, arg)
             elif 'destroy' in cmd:
                 cmd = cmd[7:].replace('"', '').replace("'", '')
                 arg = arg + ' ' + cmd
-                self.do_destroy(arg)
+                HBNBCommand.do_destroy(self, arg)
             elif 'update' in cmd:
                 cmd = cmd[6:].replace('"', '').replace("'", '')
                 args = cmd.split(',')
@@ -172,7 +178,7 @@ class HBNBCommand(cmd.Cmd):
                 name = args[1]
                 value = args[2]
                 arg = arg + ' ' + id + ' ' + name + ' ' + value
-                self.do_update(arg)
+                HBNBCommand.do_update(self, arg)
             else:
                 print("*** Unknown syntax: {}".format(line))
         except IndexError:
