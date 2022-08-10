@@ -98,6 +98,17 @@ class HBNBCommand(cmd.Cmd):
             print([str(v) for v in storage.all().values()
                   if type(v).__name__ == line_list[0]])
 
+    def do_count(self, line):
+        """Count all instances of a class"""
+        line_list = line.split()
+        if len(line_list) < 1:
+            print("** class name missing **")
+            return
+        if line_list[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        print(len(storage.all()[line_list[0]]))
+
     def do_update(self, line):
         """Update if given exact object, exact attribute"""
         line_list = line.split()
