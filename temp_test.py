@@ -10,12 +10,12 @@ print(type(fs.save))
 file_path = "file.json"
 try:
     file_path = FileStorage._FileStorage__file_path
-except:
+except Exception:
     pass
 
 try:
     os.remove(file_path)
-except:
+except Exception:
     pass
 
 fs.save()
