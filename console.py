@@ -96,6 +96,7 @@ class HBNBCommand(cmd.Cmd):
         line_list = line.split()
         if len(line_list) == 0:  # if no arg is passed to all command
             print([str(v) for v in storage.all().values()])
+            return
         if line_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
