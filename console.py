@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
 
         obj = storage.all()[key]  # check for d particular inst
         setattr(obj, line_list[2], line_list[3])
-        storage.save()
+        storage.all()[key].save()
 
     def default(self, line):
         """
