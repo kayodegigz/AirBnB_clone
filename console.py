@@ -146,9 +146,13 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """
-        every other case
+        the default method is called when the command entered is not
+        part of the methods defined. The dot format for calling commands
+        will be handled here
         """
         if "." not in line:
+            """If the command called is not called in dot format then we
+            don't know wtf it is"""
             print("*** Unknown syntax: {}".format(line))
             return
         try:
@@ -161,8 +165,8 @@ class HBNBCommand(cmd.Cmd):
                 HBNBCommand.do_count(self, arg)
             elif 'show' in cmd:
                 cmd = cmd[4:].replace('"', '').replace("'", '')
-                arg = arg + ' ' + cmd
-                HBNBCommand.do_show(self, arg)
+                arg = arg + ' ' + cmd  # parsing the command to look like
+                HBNBCommand.do_show(self, arg)  # wat we'd hv in a typical call
             elif 'destroy' in cmd:
                 cmd = cmd[7:].replace('"', '').replace("'", '')
                 arg = arg + ' ' + cmd
