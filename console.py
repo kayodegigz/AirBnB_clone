@@ -133,16 +133,16 @@ class HBNBCommand(cmd.Cmd):
         if len(line_list) < 4:
             print("** value missing **")
             return
-        if isinstance(eval(line_list[3]), int):  # strip off str ndcheck if int
+        if isinstance((line_list[3]), int):  # strip off str ndcheck if int
             line_list[3] = int(line_list[3])
-        elif isinstance(eval(line_list[3]), float):  # or if float
+        elif isinstance((line_list[3]), float):  # or if float
             line_list[3] = float(line_list[3])
         else:
             line_list[3] = line_list[3]
 
         obj = storage.all()[key]  # check for d particular inst
         setattr(obj, line_list[2], line_list[3])
-        storage.save()
+        storage.all()[key].save()
 
     def default(self, line):
         """
