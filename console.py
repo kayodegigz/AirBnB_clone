@@ -133,9 +133,15 @@ class HBNBCommand(cmd.Cmd):
         if len(line_list) < 4:
             print("** value missing **")
             return
-        if isinstance((line_list[3]), int):  # strip off str ndcheck if int
+        # if isinstance(eval(line_list[2]), dict):
+        #     for key, value in eval(line_list[2]).items():
+        #         cast = type(eval(value))
+        #         setattr(storage.all()[key], key, cast(value))
+        #         storage.all()[key].save()
+        #         return
+        if isinstance(eval(line_list[3]), int):  # strip off str ndcheck if int
             line_list[3] = int(line_list[3])
-        elif isinstance((line_list[3]), float):  # or if float
+        elif isinstance(eval(line_list[3]), float):  # or if float
             line_list[3] = float(line_list[3])
         else:
             line_list[3] = line_list[3]
@@ -170,12 +176,14 @@ class HBNBCommand(cmd.Cmd):
             elif 'update' in cmd:
                 cmd = cmd.split(',')
                 id = cmd[0][6:].replace('"', '').replace("'", '')
-                if cmd[1][0] == '{':
-                    name = cmd[1]
+                name = ""
+                if '{' in cmd[1]:
+                    name = str(cmd[1]) + ", " + str(cmd[2])
+                    value = ""
                 else:
                     name = cmd[1].replace('"', '').replace("'", '')
-                value = cmd[2].replace(
-                     '"', '').replace("'", '') if len(cmd) > 2 else ""
+                    value = cmd[2].replace(
+                        '"', '').replace("'", '')
                 arg = arg + ' ' + id + ' ' + name + ' ' + value
                 HBNBCommand.do_update(self, arg)
             else:
