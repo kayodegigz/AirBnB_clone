@@ -13,6 +13,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from models import storage  # in the init file
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -37,7 +38,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, line):
-        """creates a new instance of basemodel class"""
+        """creates a new instance of given class"""
         line_list = line.split()
         if len(line_list) < 1:
             print("** class name missing **")
@@ -133,17 +134,13 @@ class HBNBCommand(cmd.Cmd):
         if len(line_list) < 4:
             print("** value missing **")
             return
-        # if isinstance(eval(line_list[2]), dict):
-        #     for key, value in eval(line_list[2]).items():
-        #         cast = type(eval(value))
-        #         setattr(storage.all()[key], key, cast(value))
-        #         storage.all()[key].save()
-        #         return
-        if isinstance(eval(line_list[3]), int):  # strip off str ndcheck if int
-            line_list[3] = int(line_list[3])
-        elif isinstance(eval(line_list[3]), float):  # or if float
-            line_list[3] = float(line_list[3])
-        else:
+        try:
+            # strip off str ndcheck if int
+            if isinstance(eval(line_list[3]), int):
+                line_list[3] = int(line_list[3])
+            elif isinstance(eval(line_list[3]), float):  # or if float
+                line_list[3] = float(line_list[3])
+        except NameError:
             line_list[3] = line_list[3]
 
         obj = storage.all()[key]  # check for d particular inst
@@ -152,9 +149,16 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """
-        every other case
+        the default method is called when the command entered is not
+        part of the methods defined. The dot format for calling commands
+        will be handled here
         """
         if "." not in line:
+            """
+            If the command called is not called
+            in dot format then we don't
+            know wtf it is
+            """
             print("*** Unknown syntax: {}".format(line))
             return
         try:
@@ -167,25 +171,61 @@ class HBNBCommand(cmd.Cmd):
                 HBNBCommand.do_count(self, arg)
             elif 'show' in cmd:
                 cmd = cmd[4:].replace('"', '').replace("'", '')
-                arg = arg + ' ' + cmd
-                HBNBCommand.do_show(self, arg)
+                arg = arg + ' ' + cmd  # parsing the command to look like
+                HBNBCommand.do_show(self, arg)  # wat we'd hv in a typical call
             elif 'destroy' in cmd:
                 cmd = cmd[7:].replace('"', '').replace("'", '')
                 arg = arg + ' ' + cmd
                 HBNBCommand.do_destroy(self, arg)
             elif 'update' in cmd:
+                """cmd_1 = cmd  # copying out the cmd kayode will use
                 cmd = cmd.split(',')
                 id = cmd[0][6:].replace('"', '').replace("'", '')
                 name = ""
                 if '{' in cmd[1]:
                     name = str(cmd[1]) + ", " + str(cmd[2])
                     value = ""
+                """
+                id_match = re.search(r"\"(.*?)\"", cmd)
+                id = id_match.group(1)
+
+                if "{" in cmd:
+                    d_match = re.search(r"\{(.*?)\}", cmd)
+
+                    # stores the contents of dict(errthing in curly braces)
+                    d_cont = d_match.group(1).replace('"', '').replace("'", "")
+                    # quotes removed for formatting sake
+
+                    d_cont_list = d_cont.split(", ")
+
+                    """
+                    incase multiple attrs are in the dict, we split by commas
+                    nd loop thru each one nd call d update method on each attr
+                    """
+                    # print(d_cont_list)
+                    for item in d_cont_list:
+                        item = item.split(": ")
+                        cmd_arg = arg + ' ' + id + \
+                            ' ' + item[0] + ' ' + item[1]
+                        HBNBCommand.do_update(self, cmd_arg)
                 else:
+                    cmd = cmd.replace("'", "").replace('"', '')
+                    cmd_l = cmd.split(", ")
+                    cmd_arg = arg + ' ' + id + ' ' + cmd_l[1] + ' ' + cmd_l[2]
+                    HBNBCommand.do_update(self, cmd_arg)
+                """
+                    if cmd[1][0] == '{':
+                    name = cmd[1]
+                else:  #
                     name = cmd[1].replace('"', '').replace("'", '')
                     value = cmd[2].replace(
                         '"', '').replace("'", '')
                 arg = arg + ' ' + id + ' ' + name + ' ' + value
                 HBNBCommand.do_update(self, arg)
+                        '"', '').replace("'", '') if len(cmd) > 2 else ""
+                    arg = arg + ' ' + id + ' ' + name + ' ' + value
+                    HBNBCommand.do_update(self, arg)
+                """
             else:
                 print("*** Unknown syntax: {}".format(line))
         except IndexError:
