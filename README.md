@@ -269,7 +269,7 @@ For the <strong>all</strong> command, it can be passed like this <mark><class na
 (hbnb) User.all()
 [[User] (246c227a-d5c1-403d-9bc7-6a47bb9f0f68) {'first_name': 'Betty', 'last_name': 'Bar', 'created_at': datetime.datetime(2017, 9, 28, 21, 12, 19, 611352), 'updated_at': datetime.datetime(2017, 9, 28, 21, 12, 19, 611363), 'password': '63a9f0ea7bb98050796b649e85481845', 'email': 'airbnb@mail.com', 'id': '246c227a-d5c1-403d-9bc7-6a47bb9f0f68'}, [User] (38f22813-2753-4d42-b37c-57a17f1e4f88) {'first_name': 'Betty', 'last_name': 'Bar', 'created_at': datetime.datetime(2017, 9, 28, 21, 11, 42, 848279), 'updated_at': datetime.datetime(2017, 9, 28, 21, 11, 42, 848291), 'password': 'b9be11166d72e9e3ae7fd407165e4bd2', 'email': 'airbnb@mail.com', 'id': '38f22813-2753-4d42-b37c-57a17f1e4f88'}]
 (hbnb) 
-```bash
+```
   
 For the <strong>count</strong> command, it can be passed like this <mark><class name>.count()</mark>. For example:
 ```bash
@@ -277,7 +277,7 @@ For the <strong>count</strong> command, it can be passed like this <mark><class 
 2
 (hbnb) 
 (hbnb) 
-```bash
+```
   
 For the <strong>show</strong> command, it can be passed like this <mark><class name>.show(<id>)</mark>. For example:
 ```bash
@@ -286,7 +286,7 @@ For the <strong>show</strong> command, it can be passed like this <mark><class n
 (hbnb) User.show("Bar")
 ** no instance found **
 (hbnb) 
-```bash
+```
   
 For the <strong>destroy</strong> command, it can be passed like this <mark><class name>.destroy(<id>)</mark>. For example:
 ```bash
@@ -298,8 +298,8 @@ For the <strong>destroy</strong> command, it can be passed like this <mark><clas
 (hbnb) User.destroy("Bar")
 ** no instance found **
 (hbnb) 
-```bash
-  
+```
+ 
 For the <strong>update</strong> command, it can be passed like this <mark><class name>.update(<id>, <attribute name>, <attribute value>)</mark> or like this <mark><class name>.update(<id>, <dictionary representation>)</mark>. For example:
 ```bash
 #first method
@@ -322,7 +322,7 @@ For the <strong>update</strong> command, it can be passed like this <mark><class
 (hbnb) User.show("38f22813-2753-4d42-b37c-57a17f1e4f88")
 [User] (38f22813-2753-4d42-b37c-57a17f1e4f88) {'age': 89, 'first_name': 'John', 'last_name': 'Bar', 'created_at': datetime.datetime(2017, 9, 28, 21, 11, 42, 848279), 'updated_at': datetime.datetime(2017, 9, 28, 21, 17, 10, 788143), 'password': 'b9be11166d72e9e3ae7fd407165e4bd2', 'email': 'airbnb@mail.com', 'id': '38f22813-2753-4d42-b37c-57a17f1e4f88'}
 (hbnb) 
-```bash
+```
 
 
 ## Authors
