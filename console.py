@@ -13,6 +13,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from models import storage  # in the init file
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -37,7 +38,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, line):
-        """creates a new instance of basemodel class"""
+        """creates a new instance of given class"""
         line_list = line.split()
         if len(line_list) < 1:
             print("** class name missing **")
@@ -172,16 +173,48 @@ class HBNBCommand(cmd.Cmd):
                 arg = arg + ' ' + cmd
                 HBNBCommand.do_destroy(self, arg)
             elif 'update' in cmd:
+                """cmd_1 = cmd  # copying out the cmd kayode will use
                 cmd = cmd.split(',')
                 id = cmd[0][6:].replace('"', '').replace("'", '')
-                if cmd[1][0] == '{':
-                    name = cmd[1]
+                """
+
+                id_match = re.search(r"\"(.*?)\"", cmd)
+                id = id_match.group(1)
+                
+                if "{" in cmd:
+                    d_match = re.search(r"\{(.*?)\}", cmd)
+
+                    # stores the contents of dict(errthing in curly braces)
+                    d_cont = d_match.group(1).replace('"', '').replace("'", "")
+                    # quotes removed for formatting sake
+
+                    d_cont_list = d_cont.split(", ")
+
+                    """
+                    incase multiple attrs are in the dict, we split by commas
+                    nd loop thru each one nd call d update method on each attr
+                    """
+                    print(d_cont_list)
+                    for item in d_cont_list:
+                        item = item.split(": ")
+                        cmd_arg = arg + ' ' + id + ' ' + item[0] + ' ' + item[1]
+                        HBNBCommand.do_update(self, cmd_arg)
                 else:
+                    cmd = cmd.replace("'", "").replace('"', '')
+                    cmd_l = cmd.split(", ")
+                    cmd_arg = arg + ' ' + id + ' ' + cmd_l[1] + ' ' + cmd_l[2]
+                    HBNBCommand.do_update(self, cmd_arg)
+
+                """
+                    if cmd[1][0] == '{':
+                    name = cmd[1]
+                else:  # 
                     name = cmd[1].replace('"', '').replace("'", '')
-                value = cmd[2].replace(
-                     '"', '').replace("'", '') if len(cmd) > 2 else ""
-                arg = arg + ' ' + id + ' ' + name + ' ' + value
-                HBNBCommand.do_update(self, arg)
+                    value = cmd[2].replace(
+                        '"', '').replace("'", '') if len(cmd) > 2 else ""
+                    arg = arg + ' ' + id + ' ' + name + ' ' + value
+                    HBNBCommand.do_update(self, arg)
+                """
             else:
                 print("*** Unknown syntax: {}".format(line))
         except IndexError:
