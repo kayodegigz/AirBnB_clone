@@ -271,7 +271,7 @@ For the <strong>all</strong> command, it can be passed like this ```<class name>
 (hbnb) 
 ```
   
-For the <strong>count</strong> command, it can be passed like this <mark>class_name.count()</mark>. For example:
+For the <strong>count</strong> command, it can be passed like this ```<class name>.count()```. For example:
 ```bash
 (hbnb) User.count()
 2
@@ -279,7 +279,7 @@ For the <strong>count</strong> command, it can be passed like this <mark>class_n
 (hbnb) 
 ```
   
-For the <strong>show</strong> command, it can be passed like this <mark><class name>.show(<id>)</mark>. For example:
+For the <strong>show</strong> command, it can be passed like this ```<class name>.show(<id>)```. For example:
 ```bash
 (hbnb) User.show("246c227a-d5c1-403d-9bc7-6a47bb9f0f68")
 [User] (246c227a-d5c1-403d-9bc7-6a47bb9f0f68) {'first_name': 'Betty', 'last_name': 'Bar', 'created_at': datetime.datetime(2017, 9, 28, 21, 12, 19, 611352), 'updated_at': datetime.datetime(2017, 9, 28, 21, 12, 19, 611363), 'password': '63a9f0ea7bb98050796b649e85481845', 'email': 'airbnb@mail.com', 'id': '246c227a-d5c1-403d-9bc7-6a47bb9f0f68'}
@@ -288,7 +288,7 @@ For the <strong>show</strong> command, it can be passed like this <mark><class n
 (hbnb) 
 ```
   
-For the <strong>destroy</strong> command, it can be passed like this <mark><class name>.destroy(<id>)</mark>. For example:
+For the <strong>destroy</strong> command, it can be passed like this ```<class name>.destroy(<id>)```. For example:
 ```bash
 (hbnb) User.count()
 2
@@ -300,7 +300,7 @@ For the <strong>destroy</strong> command, it can be passed like this <mark><clas
 (hbnb) 
 ```
  
-For the <strong>update</strong> command, it can be passed like this <mark><class name>.update(<id>, <attribute name>, <attribute value>)</mark> or like this <mark><class name>.update(<id>, <dictionary representation>)</mark>. For example:
+For the <strong>update</strong> command, it can be passed like this ```<class name>.update(<id>, <attribute name>, <attribute value>)``` or like this ```<class name>.update(<id>, <dictionary representation>)```. For example:
 ```bash
 #first method
 (hbnb) User.show("38f22813-2753-4d42-b37c-57a17f1e4f88")
