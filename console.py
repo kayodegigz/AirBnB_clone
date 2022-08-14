@@ -231,6 +231,5 @@ class HBNBCommand(cmd.Cmd):
         except IndexError:
             print("*** Unknown syntax: {}".format(line))
 
-
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
