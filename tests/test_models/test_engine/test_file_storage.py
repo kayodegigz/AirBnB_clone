@@ -15,6 +15,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from models.engine.file_storage import FileStorage
+from models import storage
 
 class TestBaseDocs(unittest.TestCase):
     """ Tests for documentation of class"""
@@ -55,6 +56,8 @@ class TestBaseDocs(unittest.TestCase):
 class TestFileStorage(unittest.TestCase):
     '''testing file storage'''
 
+    my_model = BaseModel()
+
     @classmethod
     def setUpClass(cls):
         cls.rev1 = Review()
@@ -81,6 +84,12 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsNotNone(instances_dic)
         self.assertEqual(type(instances_dic), dict)
         self.assertIs(instances_dic, storage._FileStorage__objects)
+
+    def test_save(self):
+        """verify if JSON exists"""
+        self.my_model.save()
+        self.assertEqual(os.path.exists(storage._FileStorage__file_path), True)
+        self.assertEqual(storage.all(), storage._FileStorage__objects)
 
     def test_new(self):
         """
@@ -111,3 +120,28 @@ class TestFileStorage(unittest.TestCase):
             for line in r:
                 self.assertEqual(line, "{}")
         self.assertIs(a_storage.reload(), None)
+
+    def testsave(self):
+        """verify if JSON exists"""
+        self.my_model.save()
+        self.assertEqual(os.path.exists(storage._FileStorage__file_path), True)
+        self.assertEqual(storage.all(), storage._FileStorage__objects)
+
+    def testSaveSelf(self):
+        """ Check save self """
+        msg = "save() takes 1 positional argument but 2 were given"
+        with self.assertRaises(TypeError) as e:
+            FileStorage.save(self, 100)
+
+        self.assertEqual(str(e.exception), msg)
+
+    def test_save_FileStorage(self):
+        """ Test if 'new' method is working good """
+        var1 = self.my_model.to_dict()
+        new_key = var1['__class__'] + "." + var1['id']
+        storage.save()
+        with open("file.json", 'r') as fd:
+            var2 = json.load(fd)
+        new = var2[new_key]
+        for key in new:
+            self.assertEqual(var1[key], new[key])

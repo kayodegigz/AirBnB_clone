@@ -1,112 +1,66 @@
 #!/usr/bin/python3
-"""
-test module for testing city models
-"""
 
 import unittest
-import inspect
-import pycodestyle
-import json
 import os
-import datetime
+import pep8
+from models.user import User
 from models.base_model import BaseModel
-from models import user
-User = user.User
 
 
-class TestBaseDocs(unittest.TestCase):
-    """ Tests for documentation of class"""
+class TestUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """Set up for the doc tests"""
-        cls.base_funcs = inspect.getmembers(User, inspect.isfunction)
+        cls.my_user = User()
+        cls.my_user.first_name = "Betty"
+        cls.my_user.last_name = "Holberton"
+        cls.my_user.email = "airbnb@holbertonshool.com"
+        cls.my_user.password = "root"
 
-    def test_conformance_class(self):
-        """Test that we conform to Pycodestyle."""
-        style = pycodestyle.StyleGuide(quiet=True)
-        result = style.check_files(['models/user.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
+    @classmethod
+    def tearDownClass(cls):
+        del cls.my_user
+        try:
+            os.remove("file.json")
+        except FileNotFoundError:
+            pass
 
-    def test_conformance_test(self):
-        """Test that we conform to Pycodestyle."""
-        style = pycodestyle.StyleGuide(quiet=True)
-        result = style.check_files(['tests/test_models/test_user.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
+    def test_style_check(self):
+        """
+        Tests pep8 style
+        """
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/user.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_module_docstr(self):
-        """ Tests for docstring"""
-        self.assertTrue(len(User.__doc__) >= 1)
+    def test_is_subclass(self):
+        self.assertTrue(issubclass(self.my_user.__class__, BaseModel), True)
 
-    def test_class_docstr(self):
-        """ Tests for docstring"""
-        self.assertTrue(len(User.__doc__) >= 1)
+    def test_checking_for_functions(self):
+        self.assertIsNotNone(User.__doc__)
 
-    def test_func_docstr(self):
-        """Tests for docstrings in all functions"""
-        for func in self.base_funcs:
-            self.assertTrue(len(func[1].__doc__) >= 1)
+    def test_has_attributes(self):
+        self.assertTrue('email' in self.my_user.__dict__)
+        self.assertTrue('id' in self.my_user.__dict__)
+        self.assertTrue('created_at' in self.my_user.__dict__)
+        self.assertTrue('updated_at' in self.my_user.__dict__)
+        self.assertTrue('password' in self.my_user.__dict__)
+        self.assertTrue('first_name' in self.my_user.__dict__)
+        self.assertTrue('last_name' in self.my_user.__dict__)
 
+    def test_attributes_are_strings(self):
+        self.assertEqual(type(self.my_user.email), str)
+        self.assertEqual(type(self.my_user.password), str)
+        self.assertEqual(type(self.my_user.first_name), str)
+        self.assertEqual(type(self.my_user.first_name), str)
 
-class TestBaseModel(unittest.TestCase):
-    """ Test for BaseModel class """
-
-    def setUp(self):
-        """ general test setup, will create a temp baseModel """
-        self.temp_b = User()
-        self.temp_b1 = User()
-
-    def tearDown(self):
-        """ general tear down, will delete the temp baseModel """
-        self.temp_b = None
-        self.temp_b1 = None
-
-    def test_type_creation(self):
-        """ will test the correct type of creation """
-        self.assertEqual(type(self.temp_b), User)
-        self.assertEqual(type(self.temp_b1), User)
-
-    def test_uuid(self):
-        """test UUID for BaseModel """
-        self.assertNotEqual(self.temp_b.id, self.temp_b1.id)
-        self.assertRegex(self.temp_b.id,
-                         '^[0-9a-f]{8}-[0-9a-f]{4}'
-                         '-[0-9a-f]{4}-[0-9a-f]{4}'
-                         '-[0-9a-f]{12}$')
-        self.assertRegex(self.temp_b1.id,
-                         '^[0-9a-f]{8}-[0-9a-f]{4}'
-                         '-[0-9a-f]{4}-[0-9a-f]{4}'
-                         '-[0-9a-f]{12}$')
-
-    def test_default_values(self):
-        """ will test the ability to update """
-        self.assertEqual(self.temp_b.first_name, "")
-        self.assertEqual(self.temp_b.last_name, "")
-        self.assertEqual(self.temp_b.password, "")
-        self.assertEqual(self.temp_b.email, "")
-
-    def test_str_method(self):
-        """ will test the __str__ method to ensure it is working """
-        returned_string = str(self.temp_b)
-        test_string = f"[User] ({self.temp_b.id}) {self.temp_b.__dict__}"
-        self.assertEqual(returned_string, test_string)
+    def test_save(self):
+        self.my_user.save()
+        self.assertNotEqual(self.my_user.created_at, self.my_user.updated_at)
 
     def test_to_dict(self):
-        """tests the to_dict method to ensure it is working """
-        temp_b_dict = self.temp_b.to_dict()
-        self.assertEqual(str, type(temp_b_dict['created_at']))
-        self.assertEqual(temp_b_dict['created_at'],
-                         self.temp_b.created_at.isoformat())
-        self.assertEqual(temp_b_dict['__class__'],
-                         self.temp_b.__class__.__name__)
-        self.assertEqual(temp_b_dict['id'], self.temp_b.id)
+        self.assertEqual('to_dict' in dir(self.my_user), True)
 
-    def test_updated_time(self):
-        """test that updated time gets updated"""
-        time1 = self.temp_b.updated_at
-        self.temp_b.save()
-        time2 = self.temp_b.updated_at
-        self.assertNotEqual(time1, time2)
-        self.assertEqual(type(time1), datetime.datetime)
+
+if __name__ == "__main__":
+    unittest.main()
